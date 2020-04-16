@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300&display=swap');
+
+html,body{
+    padding : 0;
+    margin : 0;
+    height : 100%;
+}
+
+#root{
+    height : 100%;
+}
+body{
+    background-color: rgba(0,0,0,1);
+    color : #FBCF14;
+    font-family: 'Lato', sans-serif;
+}
+
+body::after {
+    content: "";
+    background: url("batik-small.png");
+    opacity: 0.15;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.App{
+    height : 100%;
+}
