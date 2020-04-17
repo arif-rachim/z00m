@@ -5,7 +5,7 @@ import {connect,createLocalVideoTrack } from 'twilio-video';
 export const AppContext = React.createContext({});
 
 const TOKEN = 'aHR0cHM6Ly9kZXNlcnQtY2hpaHVhaHVhLTIxNjMudHdpbC5pby9jcmVhdGUtejAwbS10b2tlbg==';
-
+const participantBoxSize = 200;
 const DEFAULT_STATE = {
     identity: false,
     room: false,
@@ -40,6 +40,28 @@ function reducer(state,action){
     return state;
 }
 
+function createParticipantDiv() {
+    const participantDiv = document.createElement('div');
+    participantDiv.className = 'participant';
+    participantDiv.setAttribute('style', `width : ${participantBoxSize}px; height: ${participantBoxSize}px`);
+
+    return participantDiv;
+}
+
+function uploadElPosition(el) {
+    setTimeout(() => {
+        const {videoWidth, videoHeight} = el;
+        const minVal = Math.min(videoWidth, videoHeight);
+        let scale = 1;
+        if (minVal > participantBoxSize) {
+            scale = participantBoxSize / minVal;
+        }
+        const top = ((participantBoxSize - (videoHeight)) / 2).toFixed(0);
+        const left = ((participantBoxSize - (videoWidth)) / 2).toFixed(0);
+        el.setAttribute('style', `top : ${top}px; left : ${left}px; transform : scale(${scale.toFixed(2)})`);
+    }, 200);
+}
+
 /**
  * AppContextProvider contains an object that will be rendered as a React component.
  * AppContextProvider will delegate under its context value.
@@ -61,19 +83,15 @@ export default function AppContextProvider({children}){
     function handleRemoteParticipant(container){
         return (participant) => {
             const id = participant.sid;
-            const el = document.createElement('div');
-            el.id = id;
-            el.className = 'remote-participant';
+            const el = createParticipantDiv();
             const name = document.createElement('h4');
             name.innerText = participant.identity;
-
             el.appendChild(name);
             container.appendChild(el);
-
             const addTrack = track => {
                 const participantDiv = document.getElementById(id);
                 const media = track.attach();
-
+                media.className = 'video';
                 participantDiv.appendChild(media);
             };
             participant.tracks.forEach(publication => {
@@ -98,14 +116,13 @@ export default function AppContextProvider({children}){
     }
 
     async function connectToRoom(){
-
         if(!state.token){
             return;
         }
         const activeRoom = await connect(state.token,{
             name : state.room,
             audio : true,
-            video : { width : 320 },
+            video : { width : 320,height:320 },
             logLevel : 'info'
         }).catch(error => {
             console.error('Unable to join room',error.message);
@@ -117,8 +134,11 @@ export default function AppContextProvider({children}){
 
         if(!videoRef.current.hasChildNodes()){
             const localEl = localTrack.attach();
-            localEl.className = 'local-participant';
-            videoRef.current.appendChild(localEl);
+            localEl.className = 'video';
+            const participantDiv = createParticipantDiv();
+            participantDiv.appendChild(localEl);
+            videoRef.current.appendChild(participantDiv);
+            uploadElPosition(localEl);
         }
 
         const handleParticipant = handleRemoteParticipant(videoRef.current);

@@ -134,7 +134,7 @@ export default function LoginScreen() {
                     }}>+</label>
                     <TextField label={'Phone No'}
                                variant={'standard'}
-                               type="number"
+                               type="text"
                                name={'phoneNumber'}
                                disabled={isLoading}
                                style={{

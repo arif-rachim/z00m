@@ -32,13 +32,7 @@ body::after {
     height : 100%;
 }
 
-.remote-participant{
-    position:relative;
-    width : 320px;
-    border: 1px solid #FBCF14;
-}
-
-.remote-participant h4{
+.participant h4{
     position: absolute;
     background-color: rgba(0,0,0,0.6);
     padding: 1rem;
@@ -46,9 +40,15 @@ body::after {
     margin : auto;
 }
 
-.local-participant{
+.participant {
+    position:relative;
     border: 1px solid #FBCF14;
-    width:320px;
+    background-color: rgba(0,0,0,0.6);
+    overflow: hidden;
+}
+
+.video{
+    position: absolute;
 }
 
 .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl{
