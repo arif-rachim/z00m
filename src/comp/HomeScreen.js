@@ -2,21 +2,38 @@
  * HomeScreen is a component used to render video playback from users who log into a room.
  * HomeScreen will be mounted by react if the user has successfully logged in.
  */
-import React, {useEffect, useRef} from 'react';
+import React, {useContext, useEffect} from 'react';
+import {AppContext} from "../AppContext";
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import Button from "@material-ui/core/Button";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 export default function HomeScreen(){
-    const videoRef = useRef();
+    const {state,videoRef,startVideo,leaveRoom} = useContext(AppContext);
+
     useEffect(() => {
-        (async () => {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                audio: false,
-                video: true
-            });
-            videoRef.current.srcObject = stream;
-        })();
-    },[]);
-    return <div>
-        <div style={{position:'relative',transition:'all 300ms linear-in-out'}}>
-            <video ref={videoRef} style={{borderRadius:'1rem',border:'5px solid #FBCF14',boxShadow:'0px 5px 10px 5px rgba(0,0,0,1)',overflow:'hidden'}} autoPlay={true} playsInline={true} />
+        if(!state.token){
+            return;
+        }
+        if(!state.activeRoom){
+            startVideo();
+        }
+    },[state,startVideo]);
+
+    return  <div style={{position:'relative',overflow:'auto',width:'100%'}}>
+            <div ref={videoRef}  style={{display:'flex',flexWrap:"wrap",justifyContent:'center',padding:'1rem'}}/>
+            {state.activeRoom &&
+            <Button
+                variant="outlined"
+                style={{position:'absolute',top:10,right:10,color:'#FBCF14',backgroundColor:'rgba(0,0,0,0.3)'}}
+                startIcon={<ExitToAppOutlinedIcon />} onClick={() => leaveRoom()}>
+                Leave Room
+            </Button>
+            }
+            {!state.activeRoom &&
+                <div style={{textAlign:'center'}}>
+                    <CircularProgress size={'3rem'} style={{color:'#FBCF14'}} />
+                </div>
+            }
         </div>
-    </div>
 }

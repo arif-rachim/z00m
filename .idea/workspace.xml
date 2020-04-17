@@ -3,9 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="45a2aa2b-c0de-4e49-a7d4-c556a570890e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo192.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/logo192.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo512.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/logo512.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AppContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comp/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/comp/HomeScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comp/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/comp/LoginScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +46,7 @@
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.3.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -54,7 +59,8 @@
       <option name="presentableId" value="Default" />
       <updated>1587058277197</updated>
       <workItem from="1587058280794" duration="3721000" />
-      <workItem from="1587062275711" duration="401000" />
+      <workItem from="1587062275711" duration="829000" />
+      <workItem from="1587088224607" duration="27868000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit the application day 1">
       <created>1587061898316</created>
@@ -63,7 +69,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587061898316</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Initial commit the application day 1">
+      <created>1587062743772</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1587062743772</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -74,10 +87,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Initial commit the application day 1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1587061897534">
+    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1587062742991">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1587061897534" />
+    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1587062742991" />
     <state x="565" y="258" width="260" height="211" key="Github.ShareDialog" timestamp="1587058317492">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -86,13 +99,17 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="521" y="70" key="Github.UntrackedFilesDialog/0.0.1366.728@0.0.1366.728" timestamp="1587058332434" />
-    <state x="275" y="98" key="Vcs.Push.Dialog.v2" timestamp="1587061899926">
+    <state x="275" y="98" key="Vcs.Push.Dialog.v2" timestamp="1587062745256">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="98" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1587061899926" />
-    <state x="339" y="162" key="run.anything.popup" timestamp="1587061717101">
+    <state x="275" y="98" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1587062745256" />
+    <state x="379" y="96" width="607" height="536" key="find.popup" timestamp="1587101237361">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1587061717101" />
+    <state x="379" y="96" width="607" height="536" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1587101237361" />
+    <state x="339" y="162" key="run.anything.popup" timestamp="1587116562251">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1587116562251" />
   </component>
 </project>

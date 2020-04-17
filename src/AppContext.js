@@ -1,7 +1,17 @@
-import React, {useReducer} from "react";
+import React, {useReducer, useRef} from "react";
+import * as axios from "axios";
+import {connect,createLocalVideoTrack } from 'twilio-video';
 
 export const AppContext = React.createContext({});
 
+const TOKEN = 'aHR0cHM6Ly9kZXNlcnQtY2hpaHVhaHVhLTIxNjMudHdpbC5pby9jcmVhdGUtejAwbS10b2tlbg==';
+
+const DEFAULT_STATE = {
+    identity: false,
+    room: false,
+    token: false,
+    activeRoom: false,
+};
 /**
  * Reducer contains the logic of this application. Reducer accepts two parameters.
  * The first parameter is state, and the second is action.
@@ -10,13 +20,24 @@ export const AppContext = React.createContext({});
  * @param action
  */
 function reducer(state,action){
-    const newState = {...state};
     switch(action.type){
-        case 'login' : {
-            newState.userLoggedIn = true;
-        }
+        case 'join' :
+            return {
+                ...state,
+                token: action.token,
+                room: action.room,
+                identity: action.identity,
+            };
+        case 'set-active-room' :
+            return {
+                ...state,
+                activeRoom: action.activeRoom,
+            };
+        case 'disconnect':
+            state.activeRoom && state.activeRoom.disconnect();
+            return DEFAULT_STATE;
     }
-    return newState;
+    return state;
 }
 
 /**
@@ -25,9 +46,92 @@ function reducer(state,action){
  * The context value of AppContextProvider is currently the state and dispatch function.
  */
 export default function AppContextProvider({children}){
-    const [state,dispatch] = useReducer(reducer,{});
+    const [state,dispatch] = useReducer(reducer,DEFAULT_STATE);
+    const videoRef = useRef();
+    async function getRoomToken({identity,room}){
 
-    return <AppContext.Provider value={{state,dispatch}}>
-        {children(state)}
+        const result = await axios.post(atob(TOKEN),{
+            identity,
+            room : room
+        });
+
+        dispatch({type:'join',token:result.data,identity,room});
+    }
+
+    function handleRemoteParticipant(container){
+        return (participant) => {
+            const id = participant.sid;
+            const el = document.createElement('div');
+            el.id = id;
+            el.className = 'remote-participant';
+            const name = document.createElement('h4');
+            name.innerText = participant.identity;
+
+            el.appendChild(name);
+            container.appendChild(el);
+
+            const addTrack = track => {
+                const participantDiv = document.getElementById(id);
+                const media = track.attach();
+
+                participantDiv.appendChild(media);
+            };
+            participant.tracks.forEach(publication => {
+                if(publication.isSubscribed){
+                    addTrack(publication.track);
+                }
+            });
+
+            // If new tracks get added later, add those, too.
+            participant.on('trackSubscribed', addTrack);
+
+            // When tracks are no longer available, remove the elements displaying them.
+            participant.on('trackUnsubscribed', track => {
+                // Get a list of elements from detach and remove them from the DOM.
+                track.detach().forEach(el => el.remove());
+                const container = document.getElementById(id);
+                if (container){
+                    container.remove();
+                }
+            });
+        }
+    }
+
+    async function connectToRoom(){
+
+        if(!state.token){
+            return;
+        }
+        const activeRoom = await connect(state.token,{
+            name : state.room,
+            audio : true,
+            video : { width : 320 },
+            logLevel : 'info'
+        }).catch(error => {
+            console.error('Unable to join room',error.message);
+        });
+
+        const localTrack = await createLocalVideoTrack().catch(error => {
+            console.error(`Unable to create local tracks: ${error.message}`);
+        });
+
+        if(!videoRef.current.hasChildNodes()){
+            const localEl = localTrack.attach();
+            localEl.className = 'local-participant';
+            videoRef.current.appendChild(localEl);
+        }
+
+        const handleParticipant = handleRemoteParticipant(videoRef.current);
+        activeRoom.participants.forEach(handleParticipant);
+        activeRoom.on('participantConnected',handleParticipant);
+        dispatch({type:'set-active-room',activeRoom});
+    }
+    const startVideo = () => connectToRoom();
+    const leaveRoom = () => dispatch({ type: 'disconnect' });
+
+    return <AppContext.Provider value={{state,getRoomToken,videoRef,startVideo,leaveRoom}}>
+        <div style={{position:'relative',width:'100%',height:'100%'}}>
+            {children(state)}
+        </div>
     </AppContext.Provider>
 }

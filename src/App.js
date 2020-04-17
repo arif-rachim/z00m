@@ -14,8 +14,8 @@ function App() {
         <AppContextProvider>
             {(state) => (
             <div className="App">
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',justifyContent:'center',height:'100%'}}>
-                    {state.userLoggedIn ? <HomeScreen /> : <LoginScreen/>}
+                <div style={{display: 'flex',height:'100%'}}>
+                    {state.token ? <HomeScreen /> : <LoginScreen/>}
                 </div>
             </div>)}
         </AppContextProvider>

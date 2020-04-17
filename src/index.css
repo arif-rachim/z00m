@@ -10,9 +10,10 @@ html,body{
     height : 100%;
 }
 body{
-    background-color: rgba(0,0,0,1);
     color : #FBCF14;
     font-family: 'Lato', sans-serif;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.67) 0%, rgba(0,0,0,0.67) 11%, rgba(0,0,0,1) 92%, rgba(0,0,0,1) 100%);
+
 }
 
 body::after {
@@ -29,4 +30,48 @@ body::after {
 
 .App{
     height : 100%;
+}
+
+.remote-participant{
+    position:relative;
+    width : 320px;
+    border: 1px solid #FBCF14;
+}
+
+.remote-participant h4{
+    position: absolute;
+    background-color: rgba(0,0,0,0.6);
+    padding: 1rem;
+    bottom: 0px;
+    margin : auto;
+}
+
+.local-participant{
+    border: 1px solid #FBCF14;
+    width:320px;
+}
+
+.MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl{
+    left : 20px !important;
+}
+
+.MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-shrink{
+    top: 5px !important;
+}
+
+.MuiInputBase-root{
+    color: #FFFFFF !important;
+}
+.MuiFormLabel-root{
+    color: #FFFFFF !important;
+}
+.MuiInput-underline:before{
+
+    border-bottom: 2px solid rgba(255,255,255,0.9) !important;
+}
+.MuiInput-underline:after{
+    border-bottom: 2px solid #FBCF14 !important;
+}
+.MuiButton-contained{
+    background-color: #FBCF14 !important;
 }
