@@ -77,8 +77,7 @@ export default function LoginScreen() {
             {!requestToLogin &&
             <div style={{
                 background: 'rgba(0,0,0,0.5)',
-                border: '2px solid #FBCC07',
-                borderRadius: '1rem',
+                border: '2px solid rgba(0,0,0,0.1)',
                 height: '20rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -103,10 +102,9 @@ export default function LoginScreen() {
                 position :'relative',
                 flexDirection: 'column',
                 backgroundColor: 'rgba(0,0,0,0.5)',
-                border: '1px solid #FBCF14',
                 padding: '1rem',
-                borderRadius: '10px',
-                boxShadow: '0px 10px 10px -5px rgba(0,0,0,1)'
+                border : '1px solid rgba(0,0,0,0.2)',
+                boxShadow: '0px 20px 10px -10px rgba(0,0,0,0.4)'
             }}>
                 <TextField label={'Nama Panggilan'}
                            variant={'standard'}
@@ -121,13 +119,14 @@ export default function LoginScreen() {
                            onChange={(event) => {
                                setIdentity(event.target.value.toUpperCase());
                            }}
-                           placeholder={"GORIF"}/>
+                           />
                 <div style={{position: 'relative'}}>
                     <label style={{
                         color: '#FFFFFF',
                         position: 'absolute',
                         bottom: 13,
-                        left: '8px',
+                        left: '0px',
+                        fontSize:'2rem',
                         fontWeight: 'bold'
                     }}>+</label>
                     <TextField label={'Phone No'}
@@ -150,14 +149,14 @@ export default function LoginScreen() {
                 <Button variant={'contained'} style={{marginTop: '1rem', width: '100%'}} type={'submit'}
                         disabled={isLoading}>Login</Button>
                 {isLoading &&
-                <CircularProgress size={'5rem'} style={{position: 'absolute', left: 90, bottom: 80}}/>
+                    <CircularProgress size={'5rem'} style={{position: 'absolute', left: 90, bottom: 80}}/>
                 }
             </form>
             }
 
         </div>
         <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="error">
+            <Alert onClose={handleClose} severity="error" style={{fontSize:'1.5rem'}}>
                 {errorMessage}
             </Alert>
         </Snackbar>

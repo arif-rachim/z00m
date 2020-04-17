@@ -3,27 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="45a2aa2b-c0de-4e49-a7d4-c556a570890e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/asset-manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/electro.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/precache-manifest.39d6d5536bdcd27b104af8a858781372.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/service-worker.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/css/main.e386e694.chunk.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/css/main.e386e694.chunk.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/js/2.c2baa27f.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/js/2.c2baa27f.chunk.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/js/2.c2baa27f.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/js/main.40f6ea3c.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/js/main.40f6ea3c.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/js/runtime-main.7c828b5f.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/js/runtime-main.7c828b5f.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/static/media/batik-small.e8f03c2a.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/AppContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/comp/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/comp/LoginScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
     </list>
@@ -76,7 +55,7 @@
       <updated>1587058277197</updated>
       <workItem from="1587058280794" duration="3721000" />
       <workItem from="1587062275711" duration="829000" />
-      <workItem from="1587088224607" duration="35202000" />
+      <workItem from="1587088224607" duration="37074000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit the application day 1">
       <created>1587061898316</created>
@@ -113,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587127921298</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Initial commit the application day 2">
+      <created>1587130203873</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1587130203873</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,10 +111,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Initial commit the application day 2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1587127920313">
+    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1587130203155">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1587127920313" />
+    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1587130203155" />
     <state x="565" y="258" width="260" height="211" key="Github.ShareDialog" timestamp="1587058317492">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -137,10 +123,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="521" y="70" key="Github.UntrackedFilesDialog/0.0.1366.728@0.0.1366.728" timestamp="1587058332434" />
-    <state x="275" y="98" key="Vcs.Push.Dialog.v2" timestamp="1587127922806">
+    <state x="275" y="98" key="Vcs.Push.Dialog.v2" timestamp="1587130209045">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="98" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1587127922806" />
+    <state x="275" y="98" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1587130209045" />
     <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1587128165949">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

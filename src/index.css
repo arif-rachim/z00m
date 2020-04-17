@@ -76,3 +76,7 @@ body::after {
 .MuiButton-contained{
     background-color: #FBCF14 !important;
 }
+
+.MuiInputBase-input{
+    font-size: 2rem !important;
+}
