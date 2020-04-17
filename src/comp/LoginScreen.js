@@ -53,7 +53,6 @@ export default function LoginScreen() {
         if(isTester){
             setIsLoadig(true);
             await getRoomToken({identity: identity, room: 'z00m'});
-            setIsLoadig(false);
             return;
         }
         const isValid = JSON.parse(atob(STROOMER)).indexOf(phoneDigit) >= 0;
@@ -67,7 +66,6 @@ export default function LoginScreen() {
             /*
             setIsLoadig(true);
             await getRoomToken({identity: identity, room: 'z00m'});
-            setIsLoadig(false);
              */
         }
 

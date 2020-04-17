@@ -38,6 +38,7 @@ body::after {
     padding: 1rem;
     bottom: 0px;
     margin : auto;
+    z-index: 99;
 }
 
 .participant {
