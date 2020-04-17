@@ -1,6 +1,6 @@
 import React, {useReducer, useRef} from "react";
 import * as axios from "axios";
-import {connect, createLocalVideoTrack} from 'twilio-video';
+import {connect,createLocalTracks} from 'twilio-video';
 
 export const AppContext = React.createContext({});
 
@@ -91,6 +91,7 @@ export default function AppContextProvider({children}) {
             const addTrack = track => {
                 const el = track.attach();
                 el.className = 'video';
+                el.setAttribute('style','width : 100%; height: 100%');
                 participantDiv.appendChild(el);
                 uploadElPosition(el);
             };
@@ -119,16 +120,19 @@ export default function AppContextProvider({children}) {
         if (!state.token) {
             return;
         }
-        const activeRoom = await connect(state.token, {
-            name: state.room,
+
+        const tracks = await createLocalTracks({
             audio: true,
-            video: {width: 320, height: 320}
-        }).catch(error => {
-            console.error('Unable to join room', error.message);
+            video: { facingMode: 'user' }
         });
 
-        const localTrack = await createLocalVideoTrack().catch(error => {
-            console.error(`Unable to create local tracks: ${error.message}`);
+        const localTrack = tracks.find(track => track.kind === 'video');
+
+        const activeRoom = await connect(state.token, {
+            name: state.room,
+            tracks
+        }).catch(error => {
+            console.error('Unable to join room', error.message);
         });
 
         if (!videoRef.current.hasChildNodes()) {
@@ -143,6 +147,16 @@ export default function AppContextProvider({children}) {
         const handleParticipant = handleRemoteParticipant(videoRef.current);
         activeRoom.participants.forEach(handleParticipant);
         activeRoom.on('participantConnected', handleParticipant);
+
+        // Listen to the "beforeunload" event on window to leave the Room
+        // when the tab/browser is being closed.
+        window.addEventListener('beforeunload', () => activeRoom.disconnect());
+
+        // iOS Safari does not emit the "beforeunload" event on window.
+        // Use "pagehide" instead.
+        window.addEventListener('pagehide', () => activeRoom.disconnect());
+
+
         dispatch({type: 'set-active-room', activeRoom});
     }
 

@@ -92,7 +92,7 @@ export default function LoginScreen() {
                 </svg>
                 <label style={{textAlign: 'center', fontSize: '5rem'}}>z00m</label>
                 <label style={{textAlign: 'center', marginBottom: '1rem', fontSize: '1rem'}}>
-                    Click to Join
+                    Click to Join v1
                 </label>
             </div>
             }
