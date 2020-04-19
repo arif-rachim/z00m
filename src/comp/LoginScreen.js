@@ -7,7 +7,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const STROOMER = 'WyIxNzE2MDU1MCIsIjg4ODg0NTIwIiwiOTg1NzMzNzUiLCI4MDA4NDcwOSIsIjE0MDAyNTgyIiwiOTY0NjQ3NDkiLCIwNzc0MzQwMCIsIjExOTQ4NzkyIiwiMTEzMzAyNjgiLCIyNDYwMzU4NCIsIjMwMTkwNzY5IiwiMTE0NjUyMTkiLCI4NDM2Nzk1NSIsIjU4NDI1MzczIiwiMTAzNjk4NzIiLCIwNzg3MjQxMiIsIjgzODI4NTUyIiwiMjEyMzI2NzIiLCIxNjk3NzkwOSIsIjI5ODE3OTk5IiwiNTgwMDUzMTMiLCIxMDY1NzIyNyIsIjA4MDA5NDAwIiwiMTA1NTcwODIiLCI4NTI1NDQ1NiIsIjcwODA2MTAyIiwiMjEzOTgzODkiLCIxOTE5NjI5OSIsIjE1MTcyNjE5IiwiMTcxMjIyODkiLCIyOTczMjkxMyIsIjcyMjQyMzAwIiwiOTY4MzM0OTgiLCI4MjAzNzIwNCIsIjMzNTk3ODk1IiwiOTU4MDE4ODAiLCI1ODgwNTUwNSIsIjA3ODk2NDM4IiwiODIwOTg4MTYiLCIxMTAwMzMyOSIsIjE0ODY0NDY0IiwiOTgwODQ0MzAiLCI4NTE5Mzk4NyIsIjA3ODIyMjk1IiwiNTk3MDI3MTAiLCI1MDM3NzMxNSIsIjUzMTQyOTQzIiwiMjU0Mzg0NjgiLCIxMDQxNDkxOSIsIjg5Nzc3ODEyIiwiMjgyNzU2OTkiLCI1OTk2NTIyNCIsIjE5MDg5OTM4IiwiMTAzNzU5MzkiLCIyMTY3MTM2NyIsIjg4OTY5NDE0IiwiMDUwMDAwNzQiLCI5MTE2ODgyNiIsIjk4NzE2NDM1IiwiNTE0MjkzODMiLCIzMjA3Nzg3OSIsIjUxMTg4MDgyIiwiMTIyNDg5NTUiLCIwMjg5MDg4MSIsIjE2NTg3NTY1IiwiOTEzNDY2NDYiLCIxMTg3MTgwNiIsIjExNzAwMzYwIiwiMTEyMDI2MjkiLCIxMTEwMDI5MyIsIjI5MzAwNzU2IiwiMjcxMDE5ODIiLCI5MDk4NzI4NSIsIjk0NTc5MDA2IiwiMjEyNzMyOTAiLCIxNjgwOTkwOSIsIjAwMTAwMDA5IiwiOTM2MTQ2NTUiLCI0NjA4NDMxMiIsIjkzNjAzMDc5IiwiODgwODQ4ODgiLCIxMTE2MTQxMCIsIjMyNDEyMzYzIiwiMjk2NTExNDUiLCI4MzA4Mjc3NSIsIjA5MDE4MDc1Il0';
-const TESTER = 'WyIwMDEwMDAwOSIsIjA5MDE4MDc1Il0';
+//const TESTER = 'WyIwMDEwMDAwOSIsIjA5MDE4MDc1Il0';
+
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -24,7 +25,7 @@ export default function LoginScreen() {
     const [identity, setIdentity] = useState('');
     const [openSnackbar, setOpenSnackBar] = React.useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [isLoading,setIsLoadig] = useState(false);
+    const [isLoading, setIsLoadig] = useState(false);
 
     const handleClose = () => {
         setOpenSnackBar(false);
@@ -48,25 +49,13 @@ export default function LoginScreen() {
             return;
         }
         const phoneDigit = phone.substring(phone.length - 8, phone.length);
-        const isTester = JSON.parse(atob(TESTER)).indexOf(phoneDigit) >= 0;
 
-        if(isTester){
-            setIsLoadig(true);
-            await getRoomToken({identity: identity, room: 'z00m'});
-            return;
-        }
         const isValid = JSON.parse(atob(STROOMER)).indexOf(phoneDigit) >= 0;
         if (!isValid) {
             showError('Maaf nomer anda tidak terdaftar sebagai anggota Str00m');
         } else {
-            showError(`${identity} nomer kamu terdaftar sebagai anggota Str00m, tapi sekarang kita lagi masa testing ke sebagian nomer saja, kalau kamu mau ikutan testing hubungi Gorif. Makasih ya !`);
-            /**
-             * Setelah masa testing ini akan kita enabled
-             */
-            /*
             setIsLoadig(true);
             await getRoomToken({identity: identity, room: 'z00m'});
-             */
         }
 
     }
@@ -92,18 +81,20 @@ export default function LoginScreen() {
                 </svg>
                 <label style={{textAlign: 'center', fontSize: '5rem'}}>z00m</label>
                 <label style={{textAlign: 'center', marginBottom: '1rem', fontSize: '1rem'}}>
-                    Click to Join v1
+                    Click to Join v1.1
                 </label>
             </div>
             }
             {requestToLogin &&
-            <form action=""  onSubmit={(event) => onLogin(event)} style={{
+            <form action="" onSubmit={(event) => onLogin(event)} style={{
                 display: 'flex',
-                position :'relative',
+                position: 'relative',
                 flexDirection: 'column',
                 backgroundColor: 'rgba(0,0,0,0.5)',
                 padding: '1rem',
-                border : '1px solid rgba(0,0,0,0.2)',
+                margin:'1rem',
+                maxWidth : 250,
+                border: '1px solid rgba(0,0,0,0.2)',
                 boxShadow: '0px 20px 10px -10px rgba(0,0,0,0.4)'
             }}>
                 <TextField label={'Nama Panggilan'}
@@ -119,14 +110,14 @@ export default function LoginScreen() {
                            onChange={(event) => {
                                setIdentity(event.target.value.toUpperCase());
                            }}
-                           />
+                />
                 <div style={{position: 'relative'}}>
                     <label style={{
                         color: '#FFFFFF',
                         position: 'absolute',
                         bottom: 13,
                         left: '0px',
-                        fontSize:'2rem',
+                        fontSize: '2rem',
                         fontWeight: 'bold'
                     }}>+</label>
                     <TextField label={'Phone No'}
@@ -146,17 +137,20 @@ export default function LoginScreen() {
                                placeholder={"62812345678"}/>
 
                 </div>
-                <Button variant={'contained'} style={{marginTop: '1rem', width: '100%'}} type={'submit'}
-                        disabled={isLoading}>Login</Button>
+                <div style={{display:'flex',justifyContent:'flex-end',marginTop:'1rem',marginRight:5}}>
+                    <Button variant={'contained'} type={'submit'}
+                            disabled={isLoading}>Login</Button>
+                </div>
+
                 {isLoading &&
-                    <CircularProgress size={'5rem'} style={{position: 'absolute', left: 90, bottom: 80}}/>
+                <CircularProgress size={'5rem'} style={{position: 'absolute', left: 90, bottom: 80,color:'#FBCF14'}}/>
                 }
             </form>
             }
 
         </div>
         <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="error" style={{fontSize:'1.5rem'}}>
+            <Alert onClose={handleClose} severity="error" >
                 {errorMessage}
             </Alert>
         </Snackbar>

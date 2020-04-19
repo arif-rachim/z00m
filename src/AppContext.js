@@ -1,16 +1,17 @@
-import React, {useReducer, useRef} from "react";
+import React, {useReducer} from "react";
 import * as axios from "axios";
-import {connect,createLocalTracks} from 'twilio-video';
+import {connect, createLocalTracks} from 'twilio-video';
 
 export const AppContext = React.createContext({});
 
 const TOKEN = 'aHR0cHM6Ly9kZXNlcnQtY2hpaHVhaHVhLTIxNjMudHdpbC5pby9jcmVhdGUtejAwbS10b2tlbg==';
-const participantBoxSize = 320;
+
 const DEFAULT_STATE = {
     identity: false,
     room: false,
     token: false,
     activeRoom: false,
+    videos: []
 };
 
 /**
@@ -33,32 +34,28 @@ function reducer(state, action) {
             return {
                 ...state,
                 activeRoom: action.activeRoom,
+                videos: [...state.videos, action.video]
             };
-        case 'disconnect':
+        case 'disconnect':{
             state.activeRoom && state.activeRoom.disconnect();
             return DEFAULT_STATE;
+        }
+        case 'video-add' :
+            return {
+                ...state,
+                videos: [...state.videos, action.video]
+            };
+        case 'video-remove' : {
+            return {
+                ...state,
+                videos : state.videos.filter(v => v.id !== action.id)
+            }
+        }
+        default :
+            return state;
     }
-    return state;
 }
 
-function createParticipantDiv() {
-    const participantDiv = document.createElement('div');
-    participantDiv.className = 'participant';
-    participantDiv.setAttribute('style', `width : ${participantBoxSize}px; height: ${participantBoxSize}px`);
-
-    return participantDiv;
-}
-
-function uploadElPosition(el) {
-    el.addEventListener('resize', () => {
-        const {videoWidth, videoHeight} = el;
-        const minVal = Math.min(videoWidth, videoHeight);
-        const scale = participantBoxSize / minVal;
-        const top = ((participantBoxSize - (videoHeight)) / 2).toFixed(0);
-        const left = ((participantBoxSize - (videoWidth)) / 2).toFixed(0);
-        el.setAttribute('style', `top : ${top}px; left : ${left}px; transform : scale(${scale.toFixed(2)})`);
-    });
-}
 
 /**
  * AppContextProvider contains an object that will be rendered as a React component.
@@ -67,7 +64,6 @@ function uploadElPosition(el) {
  */
 export default function AppContextProvider({children}) {
     const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
-    const videoRef = useRef();
 
     async function getRoomToken({identity, room}) {
 
@@ -79,42 +75,40 @@ export default function AppContextProvider({children}) {
         dispatch({type: 'join', token: result.data, identity, room});
     }
 
-    function handleRemoteParticipant(container) {
-        return (participant) => {
-            const id = participant.sid;
-            const participantDiv = createParticipantDiv();
-            participantDiv.id = id;
-            const name = document.createElement('h4');
-            name.innerText = participant.identity;
-            participantDiv.appendChild(name);
-            container.appendChild(participantDiv);
-            const addTrack = track => {
+    function handleRemoteParticipant(participant) {
+        const id = participant.sid;
+        const addTrack = track => {
+            if(track.kind === 'video'){
                 const el = track.attach();
-                el.className = 'video';
-                el.setAttribute('style','width : 100%; height: 100%');
-                participantDiv.appendChild(el);
-                uploadElPosition(el);
-            };
-            participant.tracks.forEach(publication => {
-                if (publication.isSubscribed) {
-                    addTrack(publication.track);
-                }
-            });
+                el.id = id;
+                el.setAttribute('data-identity',participant.identity);
+                dispatch({type:'video-add',video:el})
+            }
+            if(track.kind === 'audio'){
+                const elAudio = track.attach();
+                elAudio.setAttribute('data-id',id);
+                elAudio.setAttribute('style','position:absolute;top:0px;left:0px');
+                document.body.appendChild(elAudio);
+            }
+        };
 
-            // If new tracks get added later, add those, too.
-            participant.on('trackSubscribed', addTrack);
+        participant.tracks.forEach(publication => {
+            if (publication.isSubscribed) {
+                addTrack(publication.track);
+            }
+        });
 
-            // When tracks are no longer available, remove the elements displaying them.
-            participant.on('trackUnsubscribed', track => {
-                // Get a list of elements from detach and remove them from the DOM.
-                track.detach().forEach(el => el.remove());
-                const container = document.getElementById(id);
-                if (container) {
-                    container.remove();
-                }
-            });
-        }
+        // If new tracks get added later, add those, too.
+        participant.on('trackSubscribed', addTrack);
+
+        // When tracks are no longer available, remove the elements displaying them.
+        participant.on('trackUnsubscribed', track => {
+            // Get a list of elements from detach and remove them from the DOM.
+            track.detach().forEach(el => el.remove());
+            dispatch({type:'video-remove',id:id});
+        });
     }
+
 
     async function connectToRoom() {
         if (!state.token) {
@@ -123,11 +117,10 @@ export default function AppContextProvider({children}) {
 
         const tracks = await createLocalTracks({
             audio: true,
-            video: { facingMode: 'user' }
+            video: {facingMode: 'user'}
         });
 
         const localTrack = tracks.find(track => track.kind === 'video');
-
         const activeRoom = await connect(state.token, {
             name: state.room,
             tracks
@@ -135,18 +128,9 @@ export default function AppContextProvider({children}) {
             console.error('Unable to join room', error.message);
         });
 
-        if (!videoRef.current.hasChildNodes()) {
-            const localEl = localTrack.attach();
-            localEl.className = 'video';
-            const participantDiv = createParticipantDiv();
-            participantDiv.appendChild(localEl);
-            videoRef.current.appendChild(participantDiv);
-            uploadElPosition(localEl);
-        }
 
-        const handleParticipant = handleRemoteParticipant(videoRef.current);
-        activeRoom.participants.forEach(handleParticipant);
-        activeRoom.on('participantConnected', handleParticipant);
+        activeRoom.participants.forEach(handleRemoteParticipant);
+        activeRoom.on('participantConnected', handleRemoteParticipant);
 
         // Listen to the "beforeunload" event on window to leave the Room
         // when the tab/browser is being closed.
@@ -155,15 +139,20 @@ export default function AppContextProvider({children}) {
         // iOS Safari does not emit the "beforeunload" event on window.
         // Use "pagehide" instead.
         window.addEventListener('pagehide', () => activeRoom.disconnect());
+        const video = localTrack.attach();
+        video.id = 'my-self';
+        dispatch({type: 'set-active-room', activeRoom,video});
 
-
-        dispatch({type: 'set-active-room', activeRoom});
     }
 
     const startVideo = () => connectToRoom();
-    const leaveRoom = () => dispatch({type: 'disconnect'});
+    const leaveRoom = () => {
+        dispatch({type: 'disconnect'});
+        setTimeout(() => window.location.reload(true),1000);
 
-    return <AppContext.Provider value={{state, getRoomToken, videoRef, startVideo, leaveRoom}}>
+    };
+
+    return <AppContext.Provider value={{state, getRoomToken, startVideo, leaveRoom}}>
         <div style={{position: 'relative', width: '100%', height: '100%'}}>
             {children(state)}
         </div>
