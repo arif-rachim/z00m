@@ -1,68 +1,53 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# z00m
 
-## Available Scripts
+z00m is a small group video-calling web app built in four days in April 2020 so that members of a private group could meet in a single shared video room. A member opens the page, taps "Click to Join", enters a nickname and a phone number, and, if the number belongs to a registered member, joins one shared room with camera and microphone. The app fetches an access token for the Twilio Programmable Video service from a serverless Twilio Function, connects to the room with the `twilio-video` SDK, and lays out every participant's video in a grid that adapts to the number of people and to portrait or landscape orientation, with a button to leave the call. It is a React 16 single-page app made with Create React App and Material-UI, designed mainly for mobile browsers, and its interface text is partly in Indonesian. The production build is committed to `docs/` and served by GitHub Pages. It is not maintained.
 
-In the project directory, you can run:
+> Built in April 2020. Not maintained. Joining a call depends on the external Twilio token service still running.
 
-### `npm start`
+**Live demo:** https://www.rach.im/z00m/
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- Landing screen with a "Click to Join" card, then a login form for nickname (at least 4 characters) and phone number
+- Member check: only phone numbers on a built-in member list can join
+- One shared Twilio Video room (`z00m`) with audio and front-camera video
+- Adaptive video grid: 1 to 18 participants are arranged in 1 to 5 boxes per row, and each video is scaled to fill its box
+- Portrait and landscape layouts, with re-layout on resize
+- Leave-call button that disconnects and reloads the page
+- iOS Safari fixes for pinch-zoom and double-tap zoom
 
-### `npm test`
+## Tech stack
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+React 16 · Create React App 3 · Material-UI 4 · Twilio Video (`twilio-video`) · Axios · GitHub Pages
 
-### `npm run build`
+## Getting started
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Prerequisites: Node.js and npm.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```bash
+npm install
+npm start       # development server on http://localhost:3000
+npm test        # Jest test runner (no project tests yet)
+npm run build   # production build, then renames build/ to docs/
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The `build` script uses the Windows `rename` command to move `build/` to `docs/`; on macOS or Linux, run `react-scripts build` and move the folder yourself. The `homepage` field in `package.json` controls the base path of the build (`/z00m/`).
 
-### `npm run eject`
+## How it works
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- `src/AppContext.js` holds the app state in a reducer. `getRoomToken` posts the identity and room name to the token service, `startVideo` creates the local audio/video tracks and connects to the room, and remote participants' tracks are attached as they subscribe and removed when they leave.
+- `src/comp/LoginScreen.js` validates the form and checks the last 8 digits of the phone number against the member list before requesting a token.
+- `src/comp/HomeScreen.js` starts the video once a token is available and shows the leave button.
+- `src/comp/MobileScreen.js` arranges the `<video>` elements in a flex grid and scales each one to cover its viewport.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Project structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```text
+src/App.js                 shows LoginScreen or HomeScreen depending on the token
+src/AppContext.js          state, Twilio token request and room connection
+src/comp/LoginScreen.js    join card and login form
+src/comp/HomeScreen.js     call screen with the leave button
+src/comp/MobileScreen.js   responsive video grid
+public/                    CRA static files
+docs/                      committed production build served by GitHub Pages
+```
